@@ -1,11 +1,36 @@
-pandas
+# Core utilities
 numpy
-scikit-learn
-torch
-transformers
-tqdm
+pandas
 matplotlib
 seaborn
+tqdm
+scipy
+
+# Machine Learning
+scikit-learn
+
+# Deep Learning
+torch
+torchvision
+torchaudio
+pytorch-lightning
+
+# NLP Preprocessing
 nltk
 spacy
+gensim
+fasttext
+
+# Transformer Models
+transformers
 sentence-transformers
+
+# Graph Libraries
+networkx
+torch-geometric
+dgl
+
+# Optional utilities
+pyyaml
+regex
+logging42
