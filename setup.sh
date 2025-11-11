@@ -6,28 +6,35 @@ read -r create_venv
 
 if [[ "$create_venv" == "y" || "$create_venv" == "Y" ]]; then
     echo "Creating virtual environment .venv ..."
-    python3 -m venv .venv
+    python -m venv .venv
 
-    # Activate depending on OS
-    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+    # Activate venv (Windows vs Unix)
+    if [[ "$OS" == "Windows_NT" ]]; then
+        # Git Bash / cmd / PowerShell on Windows
         source .venv/Scripts/activate
     else
+        # macOS / Linux
         source .venv/bin/activate
     fi
 
     echo "Installing dependencies inside the virtual environment ..."
-    pip install --upgrade pip
-    pip install -r requirements.txt
+    python -m pip install --upgrade pip
+    python -m pip install -r requirements.txt
 
     echo ""
     echo "✅ Setup complete!"
     echo "Activate it later with:"
-    echo "  source .venv/bin/activate"
+    if [[ "$OS" == "Windows_NT" ]]; then
+        echo "  source .venv/Scripts/activate"
+    else
+        echo "  source .venv/bin/activate"
+    fi
 else
     echo "Skipping virtual environment creation."
-    echo "Installing dependencies globally ..."
-    pip install --upgrade pip
-    pip install -r requirements.txt
+    echo "Installing dependencies globally (or in your current env) ..."
+    python -m pip install --upgrade pip
+    python -m pip install -r requirements.txt
+
     echo ""
-    echo "✅ Setup complete (global install)."
+    echo "✅ Setup complete (no venv)."
 fi
