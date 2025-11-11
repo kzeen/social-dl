@@ -1,0 +1,96 @@
+# -------------------------
+# Python cache and artifacts
+# -------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.dll
+
+# -------------------------
+# Virtual environments
+# -------------------------
+.venv/
+venv/
+env/
+ENV/
+*.env
+*.venv
+
+# -------------------------
+# Data files
+# -------------------------
+data/*.jsonl
+data/*.csv
+data/*.tsv
+data/*.txt
+data/*.zip
+data/*.gz
+data/*.pkl
+data/*.parquet
+data/*.npy
+data/*.npz
+
+# Keep small documentation files
+!data/README.md
+
+# -------------------------
+# Models and outputs
+# -------------------------
+checkpoints/
+outputs/
+runs/
+wandb/
+lightning_logs/
+logs/
+*.pt
+*.pth
+*.ckpt
+*.joblib
+*.pkl
+
+# -------------------------
+# Jupyter notebooks
+# -------------------------
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# -------------------------
+# OS and editor files
+# -------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VSCode and JetBrains
+.vscode/
+.idea/
+*.code-workspace
+
+# -------------------------
+# Reports and LaTeX artifacts
+# -------------------------
+reports/*.pdf
+reports/*.aux
+reports/*.log
+reports/*.out
+reports/*.toc
+reports/*.synctex.gz
+reports/*.bbl
+reports/*.blg
+reports/*.fls
+reports/*.fdb_latexmk
+
+# -------------------------
+# Environment / dependency management
+# -------------------------
+*.lock
+Pipfile
+Pipfile.lock
+poetry.lock
+*.egg-info/
+.eggs/
+dist/
+build/
