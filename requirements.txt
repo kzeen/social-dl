@@ -33,3 +33,6 @@ torch-geometric
 pyyaml
 regex
 logging42
+
+# Jupyter Notebooks
+ipykernel
