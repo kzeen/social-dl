@@ -28,7 +28,6 @@ sentence-transformers
 # Graph Libraries
 networkx
 torch-geometric
-dgl
 
 # Optional utilities
 pyyaml
