@@ -25,14 +25,30 @@ approaches based on Transformer language models (e.g. BERT, RoBERTa).
     cd social-dl
     ```
 
-2. (Optional) Create a virtual environment:
+2. Run the setup script (Optionally creates a virtual environment and installs dependencies):
 
     ```bash
-    python -m venv .venv
-    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+    chmod +x setup.sh # (If needed) Make the script executable (first time only)
+    ./setup.sh
     ```
 
-3. Install dependencies:
+    You'll be prompted:
+
+    ```bash
+    Do you want to create a virtual environment (.venv)? (y/n)
+    ```
+
+    - Type **y/Y** to create and use a local virtual environment.
+    - Type **n** to install dependencies globally (or in your active environment).
+
+    After setup, activate the environment manually if needed:
+
+    ```bash
+    source .venv/bin/activate # macOS / Linux
+    source .venv/Scripts/activate # Windows (Git Bash or Powershell)
+    ```
+
+3. (Optional) Reinstall dependencies again:
 
     ```bash
     pip install -r requirements.txt
