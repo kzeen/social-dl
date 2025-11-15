@@ -36,3 +36,4 @@ logging42
 
 # Jupyter Notebooks
 ipykernel
+ipywidgets
