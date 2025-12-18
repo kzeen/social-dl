@@ -20,23 +20,6 @@ ENV/
 *.venv
 
 # -------------------------
-# Data files
-# -------------------------
-data/*.jsonl
-data/*.csv
-data/*.tsv
-data/*.txt
-data/*.zip
-data/*.gz
-data/*.pkl
-data/*.parquet
-data/*.npy
-data/*.npz
-
-# Keep small documentation files
-!data/README.md
-
-# -------------------------
 # Models and outputs
 # -------------------------
 checkpoints/
@@ -68,21 +51,6 @@ desktop.ini
 .vscode/
 .idea/
 *.code-workspace
-
-# -------------------------
-# Reports and LaTeX artifacts
-# -------------------------
-reports/*.pdf
-reports/*.aux
-reports/*.log
-reports/*.out
-reports/*.toc
-reports/*.synctex.gz
-reports/*.bbl
-reports/*.blg
-reports/*.fls
-reports/*.fdb_latexmk
-
 # -------------------------
 # Environment / dependency management
 # -------------------------

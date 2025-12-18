@@ -1,0 +1,219 @@
+============================================================
+FINAL PREPROCESSING & EDA ANALYSIS
+Dataset: Anonymized (no follower/friend counts)
+============================================================
+
+============================================================
+1. DATA LOADING
+============================================================
+
+Loading data with correct method...
+Train: (154914, 189)
+Test: (103380, 187)
+
+--- CLASS DISTRIBUTION ---
+label
+0    82674
+1    72240
+Name: count, dtype: int64
+Influencer ratio: 0.4663
+Class balance: Balanced
+
+============================================================
+2. TEXT EXTRACTION
+============================================================
+
+Text Statistics:
+  Mean length: 151.0 chars
+  Mean words: 23.9
+
+By class:
+  Observer: 151.7 chars, 24.3 words
+  Influencer: 150.3 chars, 23.3 words
+
+============================================================
+3. ENTITY EXTRACTION
+============================================================
+✓ hashtags_count
+✓ user_mentions_count
+✓ urls_count
+✓ symbols_count
+
+Entity usage by class:
+
+hashtags_count:
+           mean  median  max
+label                       
+0      0.248022     0.0   14
+1      0.373048     0.0   11
+
+user_mentions_count:
+           mean  median  max
+label                       
+0      0.861214     0.0   11
+1      0.397135     0.0   10
+
+urls_count:
+           mean  median  max
+label                       
+0      0.614885     1.0    4
+1      0.627090     1.0    4
+
+============================================================
+4. USER FEATURES (ANONYMIZED DATASET)
+============================================================
+
+Note: followers_count, friends_count, verified are anonymized (set to None)
+Available user features:
+  ✓ user.statuses_count (0.0% missing)
+  ✓ user.listed_count (0.0% missing)
+  ✓ user.favourites_count (0.0% missing)
+  ✓ user.default_profile (0.0% missing)
+  ✓ user.default_profile_image (0.0% missing)
+  ✓ user.created_at (datetime)
+
+--- KEY USER FEATURES BY CLASS ---
+
+user.statuses_count:
+               mean      50%        max
+label                                  
+0      10693.365145   3475.0  1579936.0
+1      43771.451426  18976.5  3711247.0
+
+user.listed_count:
+             mean   50%       max
+label                            
+0        6.791010   0.0    1565.0
+1      132.786559  25.0  125775.0
+
+user.favourites_count:
+               mean     50%       max
+label                                
+0      10700.279810  3086.0  596020.0
+1      19938.501592  5736.5  683560.0
+
+============================================================
+5. DERIVED FEATURE ENGINEERING
+============================================================
+✓ account_age_days
+✓ tweet_frequency (tweets per day)
+✓ favorites_per_status
+✓ listed_per_1k_statuses
+✓ mentions_per_word
+✓ hashtags_per_word
+✓ hour, day_of_week, is_weekend
+✓ is_reply, is_quote
+
+--- DERIVED FEATURES BY CLASS ---
+
+tweet_frequency:
+            mean       50%         max
+label                                 
+0      11.700739  3.970423  858.263158
+1      20.739452  9.325919  928.403034
+
+favorites_per_status:
+           mean       50%          max
+label                                 
+0      2.430311  0.945591  5913.583333
+1      1.012686  0.376264  1157.418605
+
+listed_per_1k_statuses:
+            mean       50%           max
+label                                   
+0       1.086043  0.000000    864.864865
+1      10.950176  1.085937  15000.000000
+
+============================================================
+6. FEATURE CORRELATION WITH LABEL
+============================================================
+
+Analyzing 19 features...
+
+--- TOP 15 FEATURES BY CORRELATION ---
+ 1. account_age_days                    corr=+0.2910
+ 2. user.statuses_count                 corr=+0.2810
+ 3. is_reply                            corr=-0.2160
+ 4. user_mentions_count                 corr=-0.2013
+ 5. mentions_per_word                   corr=-0.1587
+ 6. tweet_frequency                     corr=+0.1482
+ 7. user.favourites_count               corr=+0.1465
+ 8. user.listed_count                   corr=+0.0786
+ 9. hashtags_count                      corr=+0.0734
+10. listed_per_1k_statuses              corr=+0.0715
+11. is_weekend                          corr=-0.0476
+12. hashtags_per_word                   corr=+0.0333
+13. word_count                          corr=-0.0329
+14. avg_word_length                     corr=+0.0298
+15. favorites_per_status                corr=-0.0212
+
+============================================================
+7. STATISTICAL SIGNIFICANCE (T-TEST)
+============================================================
+text_length                         p=0.002411 **
+word_count                          p=0.000000 ***
+avg_word_length                     p=0.000000 ***
+hashtags_count                      p=0.000000 ***
+user_mentions_count                 p=0.000000 ***
+urls_count                          p=0.000003 ***
+user.statuses_count                 p=0.000000 ***
+user.listed_count                   p=0.000000 ***
+user.favourites_count               p=0.000000 ***
+account_age_days                    p=0.000000 ***
+tweet_frequency                     p=0.000000 ***
+favorites_per_status                p=0.000000 ***
+listed_per_1k_statuses              p=0.000000 ***
+mentions_per_word                   p=0.000000 ***
+hashtags_per_word                   p=0.000000 ***
+is_weekend                          p=0.000000 ***
+is_reply                            p=0.000000 ***
+is_quote                            p=0.000000 ***
+
+18 features are statistically significant (p < 0.05)
+
+============================================================
+8. SAVING PROCESSED DATA
+============================================================
+✓ train_with_features.csv
+✓ test_with_features.csv
+✓ feature_analysis.txt
+
+============================================================
+9. FINAL SUMMARY
+============================================================
+
+--- DATASET CHARACTERISTICS ---
+Training samples: 154,914
+Test samples: 103,380
+Features analyzed: 19
+Class ratio: 46.63% Influencers
+
+--- TOP 5 FEATURES (USE THESE!) ---
+1. account_age_days (correlation=+0.2910)
+2. user.statuses_count (correlation=+0.2810)
+3. is_reply (correlation=-0.2160)
+4. user_mentions_count (correlation=-0.2013)
+5. mentions_per_word (correlation=-0.1587)
+
+--- KEY INSIGHTS ---
+1. user.statuses_count is the strongest predictor
+2. Influencers tweet ~4x more than Observers
+3. Observers mention others ~2x more than Influencers
+4. Influencers are listed ~20x more than Observers
+5. Account age and tweet frequency are discriminative
+
+--- MISSING FEATURES (ANONYMIZED) ---
+× followers_count - anonymized
+× friends_count - anonymized
+× verified - anonymized
+× engagement metrics (all zeros)
+
+--- NEXT STEPS ---
+1. Review visualizations (run create_visualizations_final.py)
+2. Use top 12-15 features for model training
+3. Combine CamemBERT embeddings with these numeric features
+4. Expected improvement: 82.5% → 86-87%
+
+============================================================
+ANALYSIS COMPLETE
+============================================================

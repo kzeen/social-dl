@@ -1,89 +1,207 @@
 # Social DL: Predicting Social Roles from Tweets
 
+[![Kaggle Competition](https://img.shields.io/badge/Kaggle-Competition-20BEFF?logo=kaggle)](https://www.kaggle.com/competitions/csc-51054-ep-data-challenge-2025)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+
+**CSC_51054_EP Data Challenge 2025** | Kaggle Team: **Social DL**
+
+A deep learning solution for classifying Twitter users as Influencers or Observers based on individual tweet content and metadata. Achieved **84.4% accuracy** on the Kaggle test set using a hybrid approach combining CamemBERT contextual embeddings with engineered features and gradient boosting ensembles.
+
+---
+
 ## Overview
 
-Social DL is a deep learning project for the INF554 / CSC_51054_EP Data Challenge 2025.
-The goal is to predict whether a user is an Influencer (1) or an Observer (0) from the text of a single tweet.
+This project tackles the challenge of predicting social roles from short-form social media text. Influencers exhibit asymmetrical follower-to-following ratios and broadcast-oriented behavior, while Observers maintain reciprocal, conversational patterns. The task requires inferring these roles from minimal context: a single tweet (140-280 characters) with associated metadata.
 
-We start from simple baselines such as TF-IDF + Logistic Regression and extend to modern deep learning
-approaches based on Transformer language models (e.g. BERT, RoBERTa).
+### Key Features
 
-## Repository structure
+-   **Hybrid Architecture**: Combines contextual language understanding (CamemBERT) with behavioral signals (79 engineered features)
+-   **Weighted Multi-Layer Pooling**: Extracts embeddings from last 4 CamemBERT layers with learned weights [1.0, 2.0, 3.0, 4.0]
+-   **Bilingual Feature Engineering**: Detects 60+ promotional phrases in French and English
+-   **Heterogeneous Ensemble**: Combines XGBoost, LightGBM, and CatBoost for robust predictions
 
--   `src/` — Python package with data loading, preprocessing, models, and training scripts.
--   `data/` — Local data folder (JSONL files and sample submissions from Kaggle).
--   `notebooks/` — Jupyter notebooks for EDA and experiments.
--   `scripts/` — Small shell helpers to run common experiments.
--   `reports/` — Project report, figures, and slides.
+### Results
 
-## Quick start
+| Model                        | Accuracy  |
+| ---------------------------- | --------- |
+| Dummy Classifier (Baseline)  | 53.0%     |
+| Logistic Regression (TF-IDF) | 63.0%     |
+| XGBoost (Metadata Only)      | 82.8%     |
+| **CamemBERT + Ensemble**     | **84.0%** |
+| **Stacked Ensemble (Final)** | **84.4%** |
 
-1. Clone the repo:
+---
 
-    ```bash
-    git clone https://github.com/kzeen/social-dl.git
-    cd social-dl
-    ```
+## Dataset
 
-2. Run the setup script (Optionally creates a virtual environment and installs dependencies):
+-   **Training**: 154,914 tweets from 38,560 users with 194 raw features
+-   **Test**: 103,380 tweets from 25,890 users
+-   **Class Distribution**: ~53% Observers, ~47% Influencers
 
-    ```bash
-    chmod +x setup.sh # (If needed) Make the script executable (first time only)
-    ./setup.sh
-    ```
+Each data point represents a single tweet with associated user metadata and temporal information. The challenge treats tweets independently without leveraging user-level aggregation.
 
-    You'll be prompted:
+---
 
-    ```bash
-    Do you want to create a virtual environment (.venv)? (y/n)
-    ```
+## Methodology
 
-    - Type **y/Y** to create and use a local virtual environment.
-    - Type **n** to install dependencies globally (or in your active environment).
+### 1. Feature Engineering (79 Features)
 
-    After setup, activate the environment manually if needed:
+**Text Content** (12): URL presence, hashtag/mention counts, emoji density, punctuation ratios, capitalization, elongated words
 
-    ```bash
-    source .venv/bin/activate # macOS / Linux
-    source .venv/Scripts/activate # Windows (Git Bash or Powershell)
-    ```
+**Promotional Language** (2): Binary/count detection of 60+ bilingual promotional phrases ("giveaway", "nouvelle vidéo", "code promo", etc.)
 
-3. (Optional) Reinstall dependencies again:
+**Temporal** (7): Hour, day of week, weekend/business hours flags, time of day segments, month
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+**Behavioral** (58): Account age, tweet frequency, encoded categorical metadata
 
-4. Place the challenge data files under `data/`:
+### 2. Text Representation
 
-    - `train.jsonl`
-    - `kaggle_test.jsonl`
-    - `dummy.csv`
-    - `logistic_predictions.csv`
+CamemBERT-base embeddings (768-d) extracted via weighted pooling of last 4 layers:
 
-5. Run a baseline experiment:
+```
+e = Σ(i=9→12) wᵢ · MeanPool(Hᵢ)
+```
 
-    ```bash
-    python -m src.train --model logistic --data_dir data --output_dir outputs/logistic
-    ```
+Concatenated with metadata features → **847-dimensional input**
 
-6. Run a Transformer experiment:
+### 3. Ensemble Architecture
 
-    ```bash
-    python -m src.train --model bert --data_dir data --output_dir outputs/bert --epochs 3
-    ```
+-   **XGBoost**: 900 trees, depth=8, lr=0.05 → 84.8% val
+-   **LightGBM**: 512 leaves, lr=0.015, feat_frac=0.8 → 85.1% val
+-   **CatBoost**: 1500 iter, depth=8, lr=0.05 → 84.3% val
 
-## Deliverables
+Final prediction: Average of probability outputs
 
-For the class project we will use this repo to keep:
+---
 
--   Reproducible training code.
--   Experiment configuration and logs.
--   The LaTeX source of the final 3-page report and appendix.
--   The script used to generate the final Kaggle submission CSV.
+## Installation
 
-## Authors
+### Option 1: Virtual Environment (Recommended)
 
--   Karl Zeeny
--   Prakhar Tiwari
--   Sarah Rouphael
+```bash
+# Clone repository
+git clone https://github.com/kzeen/social-dl.git
+cd social-dl
+
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # macOS/Linux
+# .venv\Scripts\activate   # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Option 2: Conda Environment
+
+```bash
+# Create conda environment
+conda create -n social-dl python=3.9
+conda activate social-dl
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+---
+
+## Usage
+
+### 1. Data Setup
+
+Place competition data files in the `data/` directory:
+
+-   `train.jsonl`
+-   `kaggle_test.jsonl`
+
+### 2. Run Training Pipeline
+
+Open and execute the main notebook:
+
+```bash
+jupyter notebook notebooks/Embedded_ensemble.ipynb
+```
+
+The notebook performs:
+
+1. Feature extraction and engineering
+2. CamemBERT embedding generation (GPU accelerated)
+3. Hyperparameter tuning via grid search
+4. Ensemble training on full dataset
+5. Test set prediction generation
+
+### 3. Generate Submission
+
+Output is saved as `final_submission.csv` in the notebook directory, ready for Kaggle upload.
+
+---
+
+## Repository Structure
+
+**Current Structure:**
+
+```
+social-dl/
+├── data/                      # Competition data files
+│   ├── train.jsonl
+│   ├── kaggle_test.jsonl
+│   └── README.md
+├── notebooks/                 # Jupyter notebooks
+│   ├── Baseline Model and submission/
+│   │   ├── baseline.ipynb    # Logistic regression baseline
+│   │   ├── dummy.csv
+│   │   └── logistic_regression.csv
+│   ├── Embedded_ensemble.ipynb  # **Main pipeline**
+│   ├── Data.ipynb            # Exploratory analysis
+│   ├── distilbert_finetune.ipynb
+│   └── svm.ipynb
+├── .venv/                    # Virtual environment
+├── requirements.txt          # Python dependencies
+└── README.md
+```
+
+---
+
+## Dependencies
+
+Core libraries:
+
+-   `torch` - PyTorch deep learning framework
+-   `transformers` - Hugging Face transformers (CamemBERT)
+-   `xgboost`, `lightgbm`, `catboost` - Gradient boosting implementations
+-   `scikit-learn` - Preprocessing and metrics
+-   `pandas`, `numpy` - Data manipulation
+
+See `requirements.txt` for complete list.
+
+---
+
+## Hardware Requirements
+
+-   **GPU Recommended**: NVIDIA GPU with 4GB+ VRAM for CamemBERT inference
+-   **RAM**: 16GB+ recommended for full dataset processing
+-   **Disk**: ~2GB for data + models
+
+---
+
+## Team
+
+-   **Karl Zeeny** - karl.zeeny@polytechnique.edu
+-   **Prakhar Tiwari** - prakhar.tiwari@polytechnique.edu
+-   **Sarah Rouphael** - sarah.rouphael@polytechnique.edu
+
+École Polytechnique | Master in Visual and Creative AI
+
+---
+
+## References
+
+-   Martin et al. (2020). "CamemBERT: A Tasty French Language Model." _ACL_.
+-   Chen & Guestrin (2016). "XGBoost: A Scalable Tree Boosting System." _KDD_.
+-   Jawahar et al. (2019). "What Does BERT Learn About the Structure of Language?" _ACL_.
+
+---
+
+## License
+
+This project is for academic purposes as part of the CSC_51054_EP course at École Polytechnique.

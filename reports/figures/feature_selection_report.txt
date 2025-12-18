@@ -1,0 +1,108 @@
+============================================================
+FEATURE SELECTION REPORT
+============================================================
+
+ENSEMBLE TOP 15 FEATURES (RECOMMENDED):
+------------------------------------------------------------
+ 1. symbols_count                       score=0.8913
+ 2. hour                                score=0.8696
+ 3. user.default_profile_image          score=0.8551
+ 4. is_quote                            score=0.8152
+ 5. urls_count                          score=0.8152
+ 6. text_length                         score=0.7826
+ 7. word_count                          score=0.7717
+ 8. is_weekend                          score=0.7500
+ 9. day_of_week                         score=0.7391
+10. hashtags_per_word                   score=0.6630
+11. hashtags_count                      score=0.6522
+12. urls_per_word                       score=0.6522
+13. avg_word_length                     score=0.6413
+14. favorites_per_status                score=0.5109
+15. is_reply                            score=0.5000
+
+============================================================
+METHOD-SPECIFIC TOP 10:
+============================================================
+
+F-Test (Univariate):
+   1. user.default_profile
+   2. account_age_days
+   3. user.statuses_count
+   4. is_reply
+   5. user_mentions_count
+   6. mentions_per_word
+   7. tweet_frequency
+   8. user.favourites_count
+   9. user.listed_count
+  10. hashtags_count
+
+Mutual Information:
+   1. user.listed_count
+   2. listed_per_1k_statuses
+   3. user.statuses_count
+   4. favorites_per_status
+   5. user.default_profile
+   6. account_age_days
+   7. tweet_frequency
+   8. user_mentions_count
+   9. user.favourites_count
+  10. is_reply
+
+Random Forest Importance:
+   1. user.listed_count
+   2. listed_per_1k_statuses
+   3. user.statuses_count
+   4. tweet_frequency
+   5. favorites_per_status
+   6. account_age_days
+   7. user.default_profile
+   8. user.favourites_count
+   9. mentions_per_word
+  10. user_mentions_count
+
+RFE (Top 15 selected):
+   1. text_length
+   2. word_count
+   3. avg_word_length
+   4. user_mentions_count
+   5. user.statuses_count
+   6. urls_count
+   7. user.favourites_count
+   8. user.listed_count
+   9. tweet_frequency
+  10. favorites_per_status
+  11. account_age_days
+  12. listed_per_1k_statuses
+  13. is_reply
+  14. is_quote
+  15. user.default_profile
+
+============================================================
+FEATURE CATEGORIES:
+============================================================
+
+User Activity Features:
+  - favorites_per_status
+
+Text Features:
+  - text_length
+  - word_count
+  - hashtags_per_word
+  - urls_per_word
+  - avg_word_length
+
+Entity Features:
+  - urls_count
+  - hashtags_per_word
+  - hashtags_count
+  - urls_per_word
+
+Temporal Features:
+  - hour
+  - user.default_profile_image
+  - is_weekend
+  - day_of_week
+
+Behavioral Features:
+  - is_quote
+  - is_reply

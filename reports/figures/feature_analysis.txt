@@ -1,0 +1,58 @@
+============================================================
+FEATURE ANALYSIS SUMMARY
+============================================================
+
+TOP 15 FEATURES:
+ 1. account_age_days                    corr=+0.2910
+ 2. user.statuses_count                 corr=+0.2810
+ 3. is_reply                            corr=-0.2160
+ 4. user_mentions_count                 corr=-0.2013
+ 5. mentions_per_word                   corr=-0.1587
+ 6. tweet_frequency                     corr=+0.1482
+ 7. user.favourites_count               corr=+0.1465
+ 8. user.listed_count                   corr=+0.0786
+ 9. hashtags_count                      corr=+0.0734
+10. listed_per_1k_statuses              corr=+0.0715
+11. is_weekend                          corr=-0.0476
+12. hashtags_per_word                   corr=+0.0333
+13. word_count                          corr=-0.0329
+14. avg_word_length                     corr=+0.0298
+15. favorites_per_status                corr=-0.0212
+
+============================================================
+STATISTICALLY SIGNIFICANT FEATURES:
+============================================================
+  - text_length
+  - word_count
+  - avg_word_length
+  - hashtags_count
+  - user_mentions_count
+  - urls_count
+  - user.statuses_count
+  - user.listed_count
+  - user.favourites_count
+  - account_age_days
+  - tweet_frequency
+  - favorites_per_status
+  - listed_per_1k_statuses
+  - mentions_per_word
+  - hashtags_per_word
+  - is_weekend
+  - is_reply
+  - is_quote
+
+============================================================
+RECOMMENDED FEATURES FOR MODEL:
+============================================================
+  - account_age_days
+  - user.statuses_count
+  - is_reply
+  - user_mentions_count
+  - mentions_per_word
+  - tweet_frequency
+  - user.favourites_count
+  - user.listed_count
+  - hashtags_count
+  - listed_per_1k_statuses
+  - is_weekend
+  - hashtags_per_word
